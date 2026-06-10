@@ -284,13 +284,12 @@ class MirrorSpherical(Mirror):
         Solution = mgeo.SolverQuadratic(a, b, c)
         Solution = mgeo.KeepPositiveSolution(Solution)
 
-        ListPointIntersection = []
         for t in Solution:
             Intersect = Ray.vector * t + Ray.point
-            if Intersect[2] < 0 and Intersect in self.support:
-                ListPointIntersection.append(Intersect)
+            if Intersect - self.r0 in self.support:
+                return Intersect, True
 
-        return _IntersectionRayMirror(Ray.point, ListPointIntersection)
+        return Ray.point, False
 
     def get_local_normal(self, Point):
         """Return the normal unit vector on the spherical surface at point Point."""
