@@ -15,7 +15,6 @@ import ARTcore.ModuleMask as mmask
 import ARTcore.ModuleSource as mos
 import ARTcore.ModuleOpticalChain as moc
 import ART.ModuleAnalysisAndPlots as maap
-import ARTcore.ModuleGeometry as mgeo
 import ARTcore.ModuleDetector as mdet
 from ART.ARTmain import run_ART
 from copy import copy
@@ -27,12 +26,13 @@ start_time = time.time()
 
 
 #%%########################################################################
-Spectrum = mos.UniformSpectrum(lambdaMin=30e-6, lambdaMax=800e-6)
+#Spectrum = mos.UniformSpectrum(lambdaMin=30e-6, lambdaMax=800e-6)
 #Spectrum = mos.SingleWavelengthSpectrum(800e-6)
+Spectrum = 50e-6
 PowerDistribution = mos.GaussianPowerDistribution(1, 2, 50e-3)
-Positions = mos.DiskRayOriginsDistribution(mgeo.Origin,1)
-Directions = mos.ConeRayDirectionsDistribution(mgeo.Vector([1,0,0]), 50e-3)
-Source = mos.SimpleSource(Spectrum, PowerDistribution, Positions, Directions)
+Origins = mos.DiskRayOriginsDistribution([0,0,0],1)
+Directions = mos.ConeRayDirectionsDistribution([1,0,0], 50e-3)
+Source = mos.SimpleSource(Spectrum, PowerDistribution, Origins, Directions)
 
 ChainDescription = "2 equal large-off-axis-angle parabolas for collimation and refocusing "
 

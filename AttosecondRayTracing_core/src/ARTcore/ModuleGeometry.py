@@ -1,10 +1,10 @@
 """
-Contains a bunch of useful function for geometric transformations and measurements.
+Contains a bunch of useful functions for geometric transformations and measurements.
 Usually these don't need to be called by users of ART, but they may be useful.
 
 Some general conventions:
 - As much as possible, avoid having lists of points or vectors transiting between functions.
-    Instead, use the Vector and Point classes defined at the end of this file.
+    Instead, use the Vector and Point classes defined at the beginning of this file.
 - Functions operating on Rays should preferentially operate on lists of Rays, not individual Rays.
     The reason for that is that it's fairly rare to manipluate a single Ray, and it's easier to
     just put it in a single-element list and call the function that way.
@@ -56,6 +56,7 @@ class Vector(np.ndarray):
     def __hash__(self) -> int:
         vector_tuple = tuple(self.reshape(1, -1)[0])
         return hash(vector_tuple)
+    
 class VectorArray(np.ndarray):
     def __new__(cls, input_array):
         input_array = np.asarray(input_array)

@@ -12,9 +12,9 @@ import ARTcore.ModuleProcessing as mp
 import ARTcore.ModuleMask as mmask
 import ARTcore.ModuleSource as mos
 import ARTcore.ModuleOpticalChain as moc
-import ARTcore.ModuleGeometry as mgeo
 import ARTcore.ModuleDetector as mdet
-import ART 
+import ART # in particular ART.ModuleAnalysisAndPlots adds visualization methods to the OpticalChain class of ARTcore.ModuleOpticalChain
+#import ART.ModuleAnalysisAndPlots as maap # adds visualization methods to the OpticalChain class of ARTcore.ModuleOpticalChain
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,11 +22,10 @@ import numpy as np
 # %% Source definition
 N_rays = 1000
 
-#Spectrum = mos.UniformSpectrum(lambdaMin=30e-6, lambdaMax=800e-6)
 Wavelength = 50e-6  #single wavelength 50 nm
 PowerDistribution = mos.GaussianPowerDistribution(1, 50e-3, 30e-3/2) #Gaussian power distrib with 50 micron source beam waist, and 15 mrad 1/e^2 divergence half-angle
-Origins = mos.PointRayOriginsDistribution(mgeo.Origin) #all rays origins are at the same point, the origin [0,0,0]
-Directions = mos.ConeRayDirectionsDistribution(mgeo.Vector([1,0,0]), 30e-3) #the ray directions are a cone with 30 mrad opening half-angle
+Origins = mos.PointRayOriginsDistribution([0,0,0]) #all rays' origins are at the same point, the origin [0,0,0]
+Directions = mos.ConeRayDirectionsDistribution([1,0,0], 30e-3) #the ray directions are a cone with 30 mrad opening half-angle
 Source = mos.SimpleSource(Wavelength, PowerDistribution, Origins, Directions) #build a simple ray-source out of the above distributions
 
 SourceRays = Source(N_rays)

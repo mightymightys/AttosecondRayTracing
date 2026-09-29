@@ -14,15 +14,12 @@ import ARTcore.ModuleProcessing as mp
 import ARTcore.ModuleMask as mmask
 import ARTcore.ModuleSource as mos
 import ARTcore.ModuleOpticalChain as moc
-import ART.ModuleAnalysisAndPlots as maap
-import ARTcore.ModuleGeometry as mgeo
 import ARTcore.ModuleDetector as mdet
-from ART.ARTmain import run_ART
-from copy import copy
-import matplotlib.pyplot as plt
-from scipy.stats import linregress
-import ART.ModuleAnalysis as man
-import time
+import ART.ModuleAnalysisAndPlots as maap # adds visualization methods to the OpticalChain class of ARTcore.ModuleOpticalChain
+#import ART.ModuleAnalysis as man
+#import matplotlib.pyplot as plt
+#from scipy.stats import linregress
+#import time
 
 
 #%%########################################################################
@@ -30,9 +27,9 @@ import time
 #Spectrum = mos.SingleWavelengthSpectrum(800e-6) #spectra don't work with mos.SimpleSource, which wants a single float for the wavelength
 Wavelength = 50e-6
 PowerDistribution = mos.GaussianPowerDistribution(1, 2, 50e-3)
-Positions = mos.PointRayOriginsDistribution(mgeo.Origin)
-Directions = mos.ConeRayDirectionsDistribution(mgeo.Vector([1,0,0]), 50e-3)
-Source = mos.SimpleSource(Wavelength, PowerDistribution, Positions, Directions)
+Origins = mos.PointRayOriginsDistribution([0,0,0])
+Directions = mos.ConeRayDirectionsDistribution([1,0,0], 50e-3)
+Source = mos.SimpleSource(Wavelength, PowerDistribution, Origins, Directions)
 
 ChainDescription = "2 equal large-off-axis-angle parabolas for collimation and refocusing "
 
@@ -80,7 +77,7 @@ FocusingParabola = mmirror.MirrorParabolic(SupportFocusingParabola, FocalEffecti
 FocusingParabolaSettings = {
     'OpticalElement' : FocusingParabola,
     'Distance' : 300,
-    'IncidenceAngle' : 0.01,
+    'IncidenceAngle' : 0,
     'IncidencePlaneAngle' : 0,
     'Description' : "Second parabola for refocusing",
     'Alignment' : 'support_normal',
@@ -97,7 +94,8 @@ AlignedOpticalElements = mp.OEPlacement(OpticsList) # Align the optical elements
 
 AlignedOpticalChain = moc.OpticalChain(Source(2000), AlignedOpticalElements, Detectors, ChainDescription) # Create the optical chain
 
-#AlignedOpticalChain.rotate_OE(-1, "localnormal", "pitch", 0.005) # currently doesn't work >=/
+#AlignedOpticalChain.rotate_OE(-1, "localnormal", "pitch", 0.005) # currently doesn't work, "in", "out" "localnormal" should just be axes
+AlignedOpticalChain[-1].rotate_pitch_by(0.005)
 
 rays= AlignedOpticalChain.get_output_rays()
 

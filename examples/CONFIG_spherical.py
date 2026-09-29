@@ -11,27 +11,25 @@ import numpy as np
 import ARTcore.ModuleMirror as mmirror
 import ARTcore.ModuleSupport as msupp
 import ARTcore.ModuleProcessing as mp
-import ARTcore.ModuleMask as mmask
+#import ARTcore.ModuleMask as mmask
 import ARTcore.ModuleSource as mos
 import ARTcore.ModuleOpticalChain as moc
-import ART.ModuleAnalysisAndPlots as maap
-import ARTcore.ModuleGeometry as mgeo
 import ARTcore.ModuleDetector as mdet
-import ART.ModuleTolerancing as mtol
-from ART.ARTmain import run_ART
-from copy import copy
-import matplotlib.pyplot as plt
-from scipy.stats import linregress
-import ART.ModuleAnalysis as man
-import time
+import ART.ModuleAnalysisAndPlots as maap
+#import ART.ModuleAnalysis as man
+#import ART.ModuleTolerancing as mtol
+#import matplotlib.pyplot as plt
+#from scipy.stats import linregress
+#import time
 
 
 #%%########################################################################
 Wavelength = 45e-6  # 45 nm, central wavelength
 PowerDistribution = mos.GaussianPowerDistribution(1, 2, 50e-3)
-Positions = mos.PointRayOriginsDistribution(mgeo.Origin)
-Directions = mos.ConeRayDirectionsDistribution(mgeo.Vector([1,0,0]), 5e-3) # 5 mrad
-Source = mos.SimpleSource(Wavelength, PowerDistribution, Positions, Directions)
+#Origins = mos.PointRayOriginsDistribution(mgeo.Origin)
+Origins = mos.PointRayOriginsDistribution([0,0,0])
+Directions = mos.ConeRayDirectionsDistribution([1,0,0], 5e-3) # 5 mrad
+Source = mos.SimpleSource(Wavelength, PowerDistribution, Origins, Directions)
 
 ChainDescription = "Single spherical mirror with short RoC, used to demagnify gas HHG"
 

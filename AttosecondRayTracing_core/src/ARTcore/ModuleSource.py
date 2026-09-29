@@ -217,10 +217,11 @@ class UniformPowerDistribution(PowerDistribution):
 # %% Specific ray origins distributions
 class PointRayOriginsDistribution(RayOriginsDistribution):
     """
-    Point ray origins distribution.
+    Tay origins distribution such that all rays originate from the same point.
+    Accepts the 3 coordinates of the common origin point as a numpy-array or list.
     """
-    def __init__(self, Origin):
-        self.Origin = Origin
+    def __init__(self, Origin_array):
+        self.Origin = mgeo.Point(np.asarray(Origin_array)) #transform the coordinate into a mgeo.Point object
 
     def __call__(self, N):
         """
@@ -230,12 +231,14 @@ class PointRayOriginsDistribution(RayOriginsDistribution):
     
 class DiskRayOriginsDistribution(RayOriginsDistribution):
     """
-    Disk ray origins distribution. Uses the Vogel spiral to initialize the rays.
+    Ray origins distribution such that rays originate from a disk. Uses the Vogel spiral to initialize the rays.
+    Accepts the 3 coordinates of the disk's center point as a numpy-array or list,
+    the disk Radius (in mm), and the 3 coordinates of a normal vector to the disk as a numpy-array or list.
     """
-    def __init__(self, Origin, Radius, Normal = mgeo.Vector([0, 0, 1])):
-        self.Origin = Origin
-        self.Radius = Radius
-        self.Normal = Normal
+    def __init__(self, Origin_array, Radius, Normal_array = [0, 0, 1]):
+        self.Origin = mgeo.Point(np.asarray(Origin_array))  # transform the coordinate-array into a mgeo.Point object
+        self.Radius = Radius                                # Radius is just a number
+        self.Normal = mgeo.Vector(np.asarray(Normal_array)) # transform the coordinate-array into a mgeo.Vector object
 
     def __call__(self, N):
         """
@@ -250,8 +253,8 @@ class UniformRayDirectionsDistribution(RayDirectionsDistribution):
     """
     Uniform ray directions distribution.
     """
-    def __init__(self, Direction):
-        self.Direction = Direction
+    def __init__(self, Direction_array):
+        self.Direction = mgeo.Vector(np.asarray(Direction_array)) # transform the coordinate-array into a mgeo.Vector object
 
     def __call__(self, N):
         """
@@ -261,11 +264,11 @@ class UniformRayDirectionsDistribution(RayDirectionsDistribution):
 
 class ConeRayDirectionsDistribution(RayDirectionsDistribution):
     """
-    Cone ray directions distribution. Uses the Vogel spiral to initialize the rays.
+    Cone ray directions distribution. Uses the Vogel spiral to initialize the rays. 
     """
-    def __init__(self, Direction, Angle):
-        self.Direction = Direction
-        self.Angle = Angle
+    def __init__(self, Direction_array, Angle):
+        self.Direction = mgeo.Vector(np.asarray(Direction_array)) # transform the coordinate-array into a mgeo.Vector object
+        self.Angle = Angle # Angle is just a number
 
     def __call__(self, N):
         """
